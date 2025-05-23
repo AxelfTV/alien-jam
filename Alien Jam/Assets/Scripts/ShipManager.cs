@@ -9,12 +9,6 @@ public class ShipManager : MonoBehaviour
     [SerializeField] GameObject shipTile;
     Dictionary<Vector2Int, ShipTile> tiles;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        BuildGrid();
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -54,17 +48,8 @@ public class ShipManager : MonoBehaviour
 				tiles[currentMouseTile].OnHover();
 			}
 		}
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            DestroyGrid();
-        }
-        if (Input.GetKeyDown(KeyCode.B)) 
-        {
-            BuildGrid();
-        }
 	}
-    void BuildGrid() 
+    public void BuildGrid() 
     {
         tiles = new Dictionary<Vector2Int, ShipTile>();
 		for (int i = 0; i < ShipGrid.instance.currentWidth; i++)
@@ -79,7 +64,7 @@ public class ShipManager : MonoBehaviour
 			}
 		}
 	}
-    void DestroyGrid()
+    public void DestroyGrid()
     {
         foreach (ShipTile tile in tiles.Values)
         {
