@@ -6,6 +6,8 @@ public class ShipController : MonoBehaviour
 {
     public static ShipStats stats;
     bool thrusting;
+    bool turning;
+    int turnDir = 0;
 
     Rigidbody2D rb;
 
@@ -22,19 +24,35 @@ public class ShipController : MonoBehaviour
     {
         if(!shop)PartsTick();
 
-        thrusting = Input.GetKey(KeyCode.Space);
+        thrusting = Input.GetKey(KeyCode.W);
+        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            turning = true;
+            turnDir = 1;
+        }
+        else if(Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        {
+            turning = true;
+            turnDir = -1;
+        }
+        else
+        {
+            turning = false;
+        }
+        Debug.Log(stats.power);
     }
 	private void FixedUpdate()
 	{
-        if (!shop)
-        {
-            if (thrusting) rb.AddForce(transform.up * stats.thrust, ForceMode2D.Force);
-            else rb.AddForce(-rb.velocity, ForceMode2D.Force);
-        }
-        else 
+        if (shop)
         {
             rb.velocity = Vector2.zero;
+            return;
         }
+     
+        if (thrusting) rb.AddForce(transform.up * stats.thrust, ForceMode2D.Force);
+        rb.AddForce(-rb.velocity, ForceMode2D.Force);
+
+        if (turning) transform.RotateAround(transform.position, Vector3.forward, turnDir * stats.turnThrust * Time.fixedDeltaTime);
         
 	}
 	void PartsTick()
@@ -43,6 +61,7 @@ public class ShipController : MonoBehaviour
         {
             part.Power();
             if (thrusting) part.Thrust();
+            if (turning) part.Turn();
         }
     }
     public void OnShop()

@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject ship;
+    [SerializeField] GameObject shop;
+
+    bool shopBool;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,22 +28,30 @@ public class GameManager : MonoBehaviour
     }
     void ShopMode() 
     {
+        if (shopBool) return;
         //Turn Off Controls
         ship.GetComponent<ShipController>().OnShop();
         //Move Camera
         Camera.main.GetComponent<CameraController>().OnShop();
 		//Turn On Grid
-		ship.GetComponent<ShipManager>().BuildGrid();
-		//Open Shop UI
-	}
+		ship.GetComponent<ShipManager>().OnShop();
+        //Open Shop UI
+        shop.GetComponent<Shop>().OnShop();
+
+        shopBool = true;
+    }
     void CombatMode()
     {
+        if (!shopBool) return;
         //Close Shop UI
+        shop.GetComponent<Shop>().OffShop();
         //Turn Off Grid
-        ship.GetComponent<ShipManager>().DestroyGrid();
+        ship.GetComponent<ShipManager>().OffShop();
 		//Turn On Controls
 		ship.GetComponent<ShipController>().OffShop();
 		//Move Camera
 		Camera.main.GetComponent<CameraController>().OffShop();
+
+        shopBool = false;
 	}
 }

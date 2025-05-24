@@ -5,5 +5,6 @@ using UnityEngine;
 public enum PartName
 {
 	test,
-	testGen
+	testGen,
+	turner
 }

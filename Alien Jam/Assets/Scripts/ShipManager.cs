@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static UnityEditor.PlayerSettings;
 
 public class ShipManager : MonoBehaviour
 {
@@ -9,9 +10,12 @@ public class ShipManager : MonoBehaviour
     [SerializeField] GameObject shipTile;
     Dictionary<Vector2Int, ShipTile> tiles;
 
+    bool shop;
+
     // Update is called once per frame
     void Update()
     {
+        if (!shop) return;
         Vector2Int newMouseTile = FindMouseTile();
         if (newMouseTile != currentMouseTile)
         {
@@ -20,25 +24,6 @@ public class ShipManager : MonoBehaviour
             currentMouseTile = newMouseTile;
 			//On Hover
 			if (currentMouseTile.x != -1) tiles[currentMouseTile].OnHover();
-		}
-		
-        if (Input.GetMouseButtonDown(0)) 
-        {
-            if (currentMouseTile.x != -1) 
-            {
-                AddPart(PartName.test, currentMouseTile);
-				tiles[currentMouseTile].OnHover();
-
-			}
-		}
-        if (Input.GetKeyDown(KeyCode.G)) 
-        {
-			if (currentMouseTile.x != -1)
-			{
-				AddPart(PartName.testGen, currentMouseTile);
-				tiles[currentMouseTile].OnHover();
-
-			}
 		}
 		if (Input.GetMouseButtonDown(1))
 		{
@@ -49,14 +34,14 @@ public class ShipManager : MonoBehaviour
 			}
 		}
 	}
-    public void BuildGrid() 
+    void BuildGrid() 
     {
         tiles = new Dictionary<Vector2Int, ShipTile>();
 		for (int i = 0; i < ShipGrid.instance.currentWidth; i++)
 		{
 			for (int j = 0; j < ShipGrid.instance.currentHeight; j++)
 			{
-				ShipTile tile = Instantiate(shipTile, transform.position + Vector3.zero + Vector3.right * i + Vector3.down * j, Quaternion.identity).GetComponent<ShipTile>();
+				ShipTile tile = Instantiate(shipTile, transform.position + Vector3.zero + transform.right * i - transform.up * j, transform.rotation).GetComponent<ShipTile>();
                 Vector2Int gridPos = new Vector2Int(i, j);
 				tile.gameObject.transform.parent = gameObject.transform;
                 tile.gridPosition = gridPos;
@@ -64,12 +49,22 @@ public class ShipManager : MonoBehaviour
 			}
 		}
 	}
-    public void DestroyGrid()
+    void DestroyGrid()
     {
         foreach (ShipTile tile in tiles.Values)
         {
             Destroy(tile.gameObject);
         }
+    }
+    public void OnShop() 
+    {
+        shop = true;
+        BuildGrid();
+    }
+    public void OffShop() 
+    {
+        shop = false;
+        DestroyGrid();
     }
     Vector2Int FindMouseTile() 
     {
@@ -94,6 +89,19 @@ public class ShipManager : MonoBehaviour
             return true;
         }
         Destroy(instPart);
+        return false;
+    }
+    public bool BuyPart(ShipPart part)
+    {
+        if (currentMouseTile.x == -1) return false;
+        if (ShipGrid.instance.AddToGrid(part, currentMouseTile))
+        {
+            part.OnHover();
+            part.gridPosition = currentMouseTile;
+            part.transform.position = tiles[currentMouseTile].transform.position;
+            part.transform.parent = gameObject.transform;
+            return true;
+        }
         return false;
     }
     void DeletePart(Vector2Int pos) 

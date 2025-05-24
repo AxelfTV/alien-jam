@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] GameObject ship;
+    [SerializeField] GameObject tile;
 
     float targetZoom;
     Vector3 targetPosition;
@@ -27,7 +28,7 @@ public class CameraController : MonoBehaviour
     public void OnShop() 
     {
         targetZoom = 10;
-        targetPosition = new Vector3(ship.transform.position.x, ship.transform.position.y, -10);
+        targetPosition = new Vector3((ship.transform.position.x), (ship.transform.position.y), -10) + ship.transform.right * 12 + ship.transform.up * -3;
         targetRotation = ship.transform.rotation;
     }
     public void OffShop() 

@@ -36,13 +36,11 @@ public abstract class ShipPart : MonoBehaviour
 	protected abstract void OnCooldownEnd();
 	public void OnHover()
 	{
-		Debug.Log("Part Hovered");
-		gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
+		
 	}
 	public void OnStopHover()
 	{
-		Debug.Log("Part UnHovered");
-		gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.yellow;
+		
 	}
 	protected bool Activate() 
 	{
@@ -63,7 +61,9 @@ public abstract class ShipPart : MonoBehaviour
 				return (GameObject)Resources.Load("Parts/Test Part");
 			case PartName.testGen:
 				return (GameObject)Resources.Load("Parts/Test Generator");
-			default:
+			case PartName.turner:
+                return (GameObject)Resources.Load("Parts/Turner");
+            default:
 				return null;
 		}
 
