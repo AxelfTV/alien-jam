@@ -13,9 +13,15 @@ public abstract class ShipPart : MonoBehaviour
 	bool active;
 	[SerializeField] protected float cooldown;
 	[SerializeField] float cost;
+	[SerializeField] public int price;
+
+	[SerializeField] Sprite activeSprite;
+	[SerializeField] Sprite inactiveSprite;
+	SpriteRenderer spriteRenderer;
 	private void Start()
 	{
 		timer = cooldown;
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 	}
 	private void Update()
 	{
@@ -24,11 +30,12 @@ public abstract class ShipPart : MonoBehaviour
 		{
 			active = false;
 			OnCooldownEnd();
+			spriteRenderer.sprite = inactiveSprite;
 		}
 		
 	}
 	public virtual void Power() { }
-	public virtual void Attack() { }
+	public virtual void Attack(List<GameObject> enemiesInRange) { }
 	public virtual void Thrust() { }
 	public virtual void Turn() { }
 	public virtual void ShieldRecharge() { }
@@ -48,6 +55,7 @@ public abstract class ShipPart : MonoBehaviour
 		{
 			timer = 0;
 			active = true;
+			spriteRenderer.sprite = activeSprite;
 			ShipController.stats.power -= cost;
 			return true;
 		}
@@ -63,6 +71,8 @@ public abstract class ShipPart : MonoBehaviour
 				return (GameObject)Resources.Load("Parts/Test Generator");
 			case PartName.turner:
                 return (GameObject)Resources.Load("Parts/Turner");
+			case PartName.testGun:
+				return (GameObject)Resources.Load("Parts/Test Gun");
             default:
 				return null;
 		}

@@ -50,6 +50,9 @@ MonoBehaviour:
   gridPosition: {x: 0, y: 0}
   cooldown: 0.5
   cost: 2
+  price: 4
+  activeSprite: {fileID: 113067193, guid: 036f304dea477c546a51ae70ff294bca, type: 3}
+  inactiveSprite: {fileID: 189744844, guid: 036f304dea477c546a51ae70ff294bca, type: 3}
   turnThrust: 10
 --- !u!1 &3783876185158066281
 GameObject:
@@ -124,8 +127,8 @@ SpriteRenderer:
   m_SortingLayerID: -1383850697
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.1273585, g: 0.285487, b: 1, a: 1}
+  m_Sprite: {fileID: 189744844, guid: 036f304dea477c546a51ae70ff294bca, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

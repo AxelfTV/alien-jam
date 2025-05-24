@@ -6,5 +6,6 @@ public enum PartName
 {
 	test,
 	testGen,
-	turner
+	turner,
+	testGun
 }

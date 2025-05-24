@@ -6,6 +6,7 @@ public class ShipTile : MonoBehaviour
 {
     public Vector2Int gridPosition;
     public ShipPart part = null;
+    [SerializeField] Color hoverColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +20,7 @@ public class ShipTile : MonoBehaviour
     {
         part = ShipGrid.instance.GetPart(gridPosition);
         if (part != null) part.OnHover();
-        gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
+        gameObject.GetComponent<SpriteRenderer>().color = hoverColor;
     }
     public void OnStopHover()
     {

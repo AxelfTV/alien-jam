@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    public List<GameObject> enemiesInRange;
     public static ShipStats stats;
     bool thrusting;
     bool turning;
+    bool attacking;
     int turnDir = 0;
 
     Rigidbody2D rb;
@@ -17,12 +19,13 @@ public class ShipController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         stats = new ShipStats();
+        enemiesInRange = new List<GameObject>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!shop)PartsTick();
+        
 
         thrusting = Input.GetKey(KeyCode.W);
         if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
@@ -39,7 +42,8 @@ public class ShipController : MonoBehaviour
         {
             turning = false;
         }
-        Debug.Log(stats.power);
+        attacking = (enemiesInRange.Count > 0);
+        if (!shop) PartsTick();
     }
 	private void FixedUpdate()
 	{
@@ -62,6 +66,7 @@ public class ShipController : MonoBehaviour
             part.Power();
             if (thrusting) part.Thrust();
             if (turning) part.Turn();
+            if (attacking) part.Attack(enemiesInRange);
         }
     }
     public void OnShop()
@@ -73,4 +78,18 @@ public class ShipController : MonoBehaviour
         shop = false;
         stats.power = 0;
 	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            enemiesInRange.Add(collision.gameObject);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            enemiesInRange.Remove(collision.gameObject);
+        }
+    }
 }

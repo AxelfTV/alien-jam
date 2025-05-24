@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
     }
     public void OffShop() 
     {
-		targetZoom = 50;
+		targetZoom = 25;
 		targetPosition = new Vector3(0, 0, -10);
 		targetRotation = Quaternion.identity;
 	}

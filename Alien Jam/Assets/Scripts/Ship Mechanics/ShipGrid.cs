@@ -6,8 +6,8 @@ using UnityEngine;
 public class ShipGrid : MonoBehaviour
 {
     public static ShipGrid instance;
-	public int currentWidth = 5;
-	public int currentHeight = 8;
+	public int currentWidth = 3;
+	public int currentHeight = 4;
     const int maxWidth = 30;
     const int maxHeight = 30;
     ShipPart[,] grid;

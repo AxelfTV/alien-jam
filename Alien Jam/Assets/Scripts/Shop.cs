@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+
 
 public class Shop : MonoBehaviour
 {
@@ -45,7 +45,7 @@ public class Shop : MonoBehaviour
         }
         if (!Input.GetMouseButton(0) && holding != null)
         {
-            if (!ship.BuyPart(holding.GetComponent<ShipPart>()))
+            if (!ship.CheckBuy(holding.GetComponent<ShipPart>()))
             {
                 Vector2Int gp = holding.GetComponent<ShipPart>().gridPosition;
                 holding.transform.position = tiles[gp].transform.position;
@@ -53,6 +53,7 @@ public class Shop : MonoBehaviour
             else
             {
                 RemovePart(holding.GetComponent<ShipPart>());
+                ship.BuyPart(holding.GetComponent<ShipPart>());
             }
             holding = null;
         }
@@ -104,6 +105,7 @@ public class Shop : MonoBehaviour
         shop = true;
         BuildGrid();
         AddPart(PartName.testGen, new Vector2Int(2, 2));
+        AddPart(PartName.testGun, new Vector2Int(4, 2));
         AddPart(PartName.test, new Vector2Int(2, 5));
         AddPart(PartName.turner, new Vector2Int(2, 8));
 

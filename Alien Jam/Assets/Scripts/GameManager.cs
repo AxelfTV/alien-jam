@@ -6,25 +6,31 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject ship;
     [SerializeField] GameObject shop;
+    CombatManager combatManager;
 
     bool shopBool;
     // Start is called before the first frame update
     void Start()
     {
+        combatManager = GetComponent<CombatManager>();
         ShopMode();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) 
-        {
-            ShopMode();
-        }
         if (Input.GetKeyDown(KeyCode.C)) 
         {
-            CombatMode();
+            ShopOver();
         }
+    }
+    public void CombatOver()
+    {
+        ShopMode();
+    }
+    public void ShopOver()
+    {
+        CombatMode();
     }
     void ShopMode() 
     {
@@ -37,6 +43,8 @@ public class GameManager : MonoBehaviour
 		ship.GetComponent<ShipManager>().OnShop();
         //Open Shop UI
         shop.GetComponent<Shop>().OnShop();
+
+        combatManager.OnShop();
 
         shopBool = true;
     }
@@ -51,6 +59,8 @@ public class GameManager : MonoBehaviour
 		ship.GetComponent<ShipController>().OffShop();
 		//Move Camera
 		Camera.main.GetComponent<CameraController>().OffShop();
+        //Start Wave
+        combatManager.OffShop();
 
         shopBool = false;
 	}

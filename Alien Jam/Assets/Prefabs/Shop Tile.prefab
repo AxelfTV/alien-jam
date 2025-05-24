@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 462772783
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 86058884, guid: 036f304dea477c546a51ae70ff294bca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridPosition: {x: 0, y: 0}
   part: {fileID: 0}
+  hoverColor: {r: 0.49019608, g: 0.49019608, b: 0.49019608, a: 1}
 --- !u!61 &277650168326718190
 BoxCollider2D:
   m_ObjectHideFlags: 0

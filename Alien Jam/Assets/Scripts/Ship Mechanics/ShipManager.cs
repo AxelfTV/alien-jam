@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEditor.PlayerSettings;
+
 
 public class ShipManager : MonoBehaviour
 {
@@ -91,18 +91,23 @@ public class ShipManager : MonoBehaviour
         Destroy(instPart);
         return false;
     }
-    public bool BuyPart(ShipPart part)
+    public bool CheckBuy(ShipPart part)
     {
         if (currentMouseTile.x == -1) return false;
-        if (ShipGrid.instance.AddToGrid(part, currentMouseTile))
-        {
-            part.OnHover();
-            part.gridPosition = currentMouseTile;
-            part.transform.position = tiles[currentMouseTile].transform.position;
-            part.transform.parent = gameObject.transform;
-            return true;
-        }
+        if (ShipController.stats.money < part.price) return false;
+        if (ShipGrid.instance.AddToGrid(part, currentMouseTile)) return true;
         return false;
+    }
+    public void BuyPart(ShipPart part)
+    {
+        
+        part.OnHover();
+        ShipController.stats.money -= part.price;
+        Debug.Log(ShipController.stats.money);
+        part.gridPosition = currentMouseTile;
+        part.transform.position = tiles[currentMouseTile].transform.position;
+        part.transform.parent = gameObject.transform;
+            
     }
     void DeletePart(Vector2Int pos) 
     {
