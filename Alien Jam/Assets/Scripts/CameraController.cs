@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] GameObject ship;
-    [SerializeField] GameObject tile;
 
     float targetZoom;
     Vector3 targetPosition;

@@ -18,6 +18,9 @@ public abstract class ShipPart : MonoBehaviour
 	[SerializeField] Sprite activeSprite;
 	[SerializeField] Sprite inactiveSprite;
 	SpriteRenderer spriteRenderer;
+
+	[SerializeField] string partName;
+	[SerializeField] string partDesc;
 	private void Start()
 	{
 		timer = cooldown;
@@ -39,16 +42,19 @@ public abstract class ShipPart : MonoBehaviour
 	public virtual void Thrust() { }
 	public virtual void Turn() { }
 	public virtual void ShieldRecharge() { }
+	public virtual void OnAdd() { }
+	public virtual void OnRemove() { }
 	protected abstract void Tick();
 	protected abstract void OnCooldownEnd();
 	public void OnHover()
 	{
-		
+		GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetInfoPanel(partName, partDesc,price,cost,cooldown);
 	}
 	public void OnStopHover()
 	{
-		
-	}
+		GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().CloseInfoPanel();
+
+    }
 	protected bool Activate() 
 	{
 		if (timer >= cooldown && ShipController.stats.power >= cost)
@@ -65,14 +71,38 @@ public abstract class ShipPart : MonoBehaviour
 	{
 		switch (name)
 		{
-			case PartName.test:
-				return (GameObject)Resources.Load("Parts/Test Part");
-			case PartName.testGen:
-				return (GameObject)Resources.Load("Parts/Test Generator");
-			case PartName.turner:
-                return (GameObject)Resources.Load("Parts/Turner");
-			case PartName.testGun:
-				return (GameObject)Resources.Load("Parts/Test Gun");
+			case PartName.thruster1:
+				return (GameObject)Resources.Load("Parts/thruster1");
+            case PartName.thruster2:
+                return (GameObject)Resources.Load("Parts/thruster2");
+            case PartName.thruster3:
+                return (GameObject)Resources.Load("Parts/thruster3");
+            case PartName.generator1:
+				return (GameObject)Resources.Load("Parts/generator1");
+            case PartName.generator2:
+                return (GameObject)Resources.Load("Parts/generator2");
+            case PartName.generator3:
+                return (GameObject)Resources.Load("Parts/generator3");
+            case PartName.turner1:
+                return (GameObject)Resources.Load("Parts/turner1");
+            case PartName.turner2:
+                return (GameObject)Resources.Load("Parts/turner2");
+            case PartName.turner3:
+                return (GameObject)Resources.Load("Parts/turner3");
+            case PartName.gun1:
+				return (GameObject)Resources.Load("Parts/gun1");
+            case PartName.gun2:
+                return (GameObject)Resources.Load("Parts/gun2");
+            case PartName.gun3:
+                return (GameObject)Resources.Load("Parts/gun3");
+            case PartName.armour1:
+                return (GameObject)Resources.Load("Parts/armour1");
+            case PartName.shield1:
+                return (GameObject)Resources.Load("Parts/shield1");
+            case PartName.charger1:
+                return (GameObject)Resources.Load("Parts/charger1");
+            case PartName.battery1:
+                return (GameObject)Resources.Load("Parts/battery1");
             default:
 				return null;
 		}

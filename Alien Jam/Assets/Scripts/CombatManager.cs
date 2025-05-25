@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
     List<Enemy> enemies;
     [SerializeField] List<GameObject> enemyPrefabs;
+    int points;
+    int wave = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,16 +38,34 @@ public class CombatManager : MonoBehaviour
     }
     void SpawnWave()
     {
+        wave++;
+        points = wave;
         enemies = new List<Enemy>();
-
-        Enemy enemy = SpawnEnemy().GetComponent<Enemy>();
-        enemy.combatManager = this;
-        enemies.Add(enemy);
+        while(points > 0)
+        {
+            Enemy enemy = SpawnEnemy().GetComponent<Enemy>();
+            enemy.combatManager = this;
+            enemies.Add(enemy);
+        }
     }
     GameObject SpawnEnemy()
     {
-        int i = Random.Range(0, enemies.Count);
-        return Instantiate(enemyPrefabs[i], new Vector3(20,20,0), Quaternion.identity);
+        List<GameObject> randomisedList = enemyPrefabs.OrderBy(x => Random.value).ToList();
+        float angle = Random.Range(0, Mathf.PI * 2);
+        Vector3 spawnDir = new Vector3(1.6f*Mathf.Sin(angle), Mathf.Cos(angle));
+        float radius = Random.Range(30, 40);
+        GameObject enemy = null;
+        for(int i = 0; i< randomisedList.Count; i++)
+        {
+            Enemy e = randomisedList[i].GetComponent<Enemy>();
+            if(e.cost <= points)
+            {
+                enemy = randomisedList[i];
+                points -= e.cost;
+                break;
+            }
+        }
+        return Instantiate(enemy, spawnDir*radius, Quaternion.identity);
     }
     void EndWave()
     {

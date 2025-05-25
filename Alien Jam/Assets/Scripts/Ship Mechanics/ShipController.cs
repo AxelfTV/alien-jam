@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
+    [SerializeField] float shieldRechargeCooldown;
     public List<GameObject> enemiesInRange;
     public static ShipStats stats;
     bool thrusting;
     bool turning;
     bool attacking;
+    bool recharging;
+    bool canRecharge;
     int turnDir = 0;
+    float thrustDir = 0;
 
     Rigidbody2D rb;
 
@@ -25,10 +29,26 @@ public class ShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TakeDamage(8);
+        }
+        if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        {
+            thrusting = true;
+            thrustDir = 1;
+        }
+        else if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        {
+            thrusting = true;
+            thrustDir = -0.5f;
+        }
+        else
+        {
+            thrusting = false;
+        }
 
-        thrusting = Input.GetKey(KeyCode.W);
-        if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             turning = true;
             turnDir = 1;
@@ -43,17 +63,19 @@ public class ShipController : MonoBehaviour
             turning = false;
         }
         attacking = (enemiesInRange.Count > 0);
+        recharging = (canRecharge && stats.shield < stats.maxShield);
         if (!shop) PartsTick();
     }
 	private void FixedUpdate()
 	{
         if (shop)
         {
+            rb.freezeRotation = true;
             rb.velocity = Vector2.zero;
             return;
         }
-     
-        if (thrusting) rb.AddForce(transform.up * stats.thrust, ForceMode2D.Force);
+        rb.freezeRotation = false;
+        if (thrusting) rb.AddForce(transform.up * stats.thrust * thrustDir, ForceMode2D.Force);
         rb.AddForce(-rb.velocity, ForceMode2D.Force);
 
         if (turning) transform.RotateAround(transform.position, Vector3.forward, turnDir * stats.turnThrust * Time.fixedDeltaTime);
@@ -67,29 +89,73 @@ public class ShipController : MonoBehaviour
             if (thrusting) part.Thrust();
             if (turning) part.Turn();
             if (attacking) part.Attack(enemiesInRange);
+            if (recharging) part.ShieldRecharge();
         }
     }
     public void OnShop()
     {
         shop = true;
+        stats.power = 0;
+        stats.shield = stats.maxShield;
     }
     public void OffShop() 
     {
         shop = false;
-        stats.power = 0;
+        
 	}
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void HealButton()
     {
-        if (collision.CompareTag("Enemy"))
+        int missingHealth = stats.maxHealth - stats.health;
+        if(missingHealth > stats.money)
         {
-            enemiesInRange.Add(collision.gameObject);
+            Heal(stats.money);
+            stats.money = 0;
+            return;
+        }
+        stats.money -= missingHealth;
+        Heal(stats.maxHealth);
+    }
+    void Heal(int health)
+    {
+        stats.health += health;
+        if(stats.health> stats.maxHealth) stats.health = stats.maxHealth;
+    }
+    public void TakeDamage(int damage)
+    {
+        if (shop) return;
+        StopCoroutine("ShieldRechargeCooldown");
+        StartCoroutine("ShieldRechargeCooldown");
+        if (stats.shield > 0)
+        {
+            stats.shield -= damage;
+            if(stats.shield < 0) stats.shield = 0;
+            
+        }
+        else
+        {
+            stats.health -= damage;
+            if(stats.health < 0)
+            {
+                stats.health = 0;
+                Die();
+            }
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    void Die()
     {
-        if (collision.CompareTag("Enemy"))
+        //game over
+    }
+    IEnumerator ShieldRechargeCooldown()
+    {
+        canRecharge = false;
+        yield return new WaitForSeconds(shieldRechargeCooldown);
+        canRecharge = true;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Border"))
         {
-            enemiesInRange.Remove(collision.gameObject);
+            rb.AddForce(-rb.velocity * 3, ForceMode2D.Impulse);
         }
     }
 }

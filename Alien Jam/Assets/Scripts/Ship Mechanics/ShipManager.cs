@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-
+using TMPro;
+using Unity.VisualScripting;
 
 public class ShipManager : MonoBehaviour
 {
@@ -12,12 +12,27 @@ public class ShipManager : MonoBehaviour
 
     bool shop;
 
+    [SerializeField] int shipLevel = 0;
+    [SerializeField]GameObject[] shipSprites;
+    [SerializeField] GameObject upgradeButton;
+    private void Start()
+    {
+        SetShipSize();
+        SetShipGrid();
+        SetUpgradeButtonText();
+        BuildGrid();
+        AddPart(PartName.generator1, new Vector2Int(0, 0));
+        AddPart(PartName.thruster1, new Vector2Int(1, 3));
+        AddPart(PartName.turner1, new Vector2Int(1, 1));
+        AddPart(PartName.gun1, new Vector2Int(2, 0));
+        DestroyGrid();
+    }
     // Update is called once per frame
     void Update()
     {
         if (!shop) return;
         Vector2Int newMouseTile = FindMouseTile();
-        if (newMouseTile != currentMouseTile)
+        if (newMouseTile != currentMouseTile && !Input.GetMouseButton(0))
         {
             //On Not Hover
             if (currentMouseTile.x != -1) tiles[currentMouseTile].OnStopHover();
@@ -25,6 +40,13 @@ public class ShipManager : MonoBehaviour
 			//On Hover
 			if (currentMouseTile.x != -1) tiles[currentMouseTile].OnHover();
 		}
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (currentMouseTile.x != -1)
+            {
+                tiles[currentMouseTile].OnStopHover();
+            }
+        }
 		if (Input.GetMouseButtonDown(1))
 		{
             if (currentMouseTile.x != -1) 
@@ -83,9 +105,8 @@ public class ShipManager : MonoBehaviour
 		ShipPart sp = instPart.GetComponent<ShipPart>();
         if (ShipGrid.instance.AddToGrid(sp, pos))
         {
-
-            sp.OnHover();
             sp.gridPosition = pos;
+            sp.OnAdd();
             return true;
         }
         Destroy(instPart);
@@ -100,10 +121,8 @@ public class ShipManager : MonoBehaviour
     }
     public void BuyPart(ShipPart part)
     {
-        
         part.OnHover();
         ShipController.stats.money -= part.price;
-        Debug.Log(ShipController.stats.money);
         part.gridPosition = currentMouseTile;
         part.transform.position = tiles[currentMouseTile].transform.position;
         part.transform.parent = gameObject.transform;
@@ -113,6 +132,8 @@ public class ShipManager : MonoBehaviour
     {
         ShipPart part = tiles[pos].part;
         if (part == null) return;
+        part.OnRemove();
+        ShipController.stats.money += part.price / 2;
         for (int i = 0; i < part.width; i++) 
         {
             for (int j = 0; j < part.height; j++)
@@ -122,5 +143,62 @@ public class ShipManager : MonoBehaviour
         }
         ShipGrid.instance.RemoveFromGrid(part);
         Destroy(part.gameObject);
+    }
+    void SetShipSize()
+    {
+        for(int i = 0; i < shipSprites.Length; i++)
+        {
+            if (i == shipLevel) shipSprites[i].SetActive(true);
+            else shipSprites[i].SetActive(false);
+        }
+    }
+    void SetShipGrid()
+    {
+        switch (shipLevel)
+        {
+            case 0:
+                ShipGrid.instance.currentWidth = 3;
+                ShipGrid.instance.currentHeight = 4;
+                break;
+            case 1:
+                ShipGrid.instance.currentWidth = 4;
+                ShipGrid.instance.currentHeight = 5;
+                break;
+            case 2:
+                ShipGrid.instance.currentWidth = 5;
+                ShipGrid.instance.currentHeight = 7;
+                break;
+            default:
+                break;
+        }
+    }
+    public void UpgradeShip()
+    {
+        if (shipLevel >= shipSprites.Length) return;
+        int price;
+        if (shipLevel == 0) price = 30;
+        else price = 100;
+        if (ShipController.stats.money < price) return;
+        ShipController.stats.money -= price;
+        shipLevel++;
+        SetShipSize();
+        SetShipGrid();
+        DestroyGrid();
+        BuildGrid();
+        if (shipLevel >= 2) upgradeButton.SetActive(false);
+        else SetUpgradeButtonText();
+    }
+    void SetUpgradeButtonText()
+    {
+        TMP_Text text = upgradeButton.GetComponentInChildren<TMP_Text>();
+        switch(shipLevel)
+        {
+            case 0:
+                text.text = "Upgrade Ship - 30";
+                break;
+            case 1:
+                text.text = "Upgrade Ship - 100";
+                break;
+        }
     }
 }

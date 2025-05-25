@@ -5,11 +5,12 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     public CombatManager combatManager;
-    int health = 10;
-    
+    [SerializeField] int health = 10;
+    [SerializeField] public int cost = 1;
+    [SerializeField] int money = 0;
+
     public void TakeDamage(int damage)
     {
-        Debug.Log("Taking Damage: " + damage.ToString());
         health -= damage;
         if(health <= 0)
         {
@@ -19,6 +20,7 @@ public abstract class Enemy : MonoBehaviour
     }
     void Die()
     {
+        ShipController.stats.money += money;
         combatManager.OnEnemyDeath(this);
         Destroy(gameObject);
     }

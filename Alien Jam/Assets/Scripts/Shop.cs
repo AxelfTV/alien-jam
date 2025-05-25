@@ -10,8 +10,8 @@ public class Shop : MonoBehaviour
     Dictionary<Vector2Int, ShopTile> tiles;
     public static ShipPart[,] grid;
     List<ShipPart> parts;
-    int shopWidth = 6;
-    int shopHeight = 12;
+    int shopWidth = 8;
+    int shopHeight = 13;
     bool shop;
     Vector2Int currentMouseTile;
 
@@ -27,7 +27,7 @@ public class Shop : MonoBehaviour
     {
         if (!shop) return;
         Vector2Int newMouseTile = FindMouseTile();
-        if (newMouseTile != currentMouseTile)
+        if (newMouseTile != currentMouseTile && !Input.GetMouseButton(0))
         {
             //On Not Hover
             if (currentMouseTile.x != -1) tiles[currentMouseTile].OnStopHover();
@@ -37,6 +37,10 @@ public class Shop : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(0))
         {
+            if (currentMouseTile.x != -1)
+            {
+                tiles[currentMouseTile].OnStopHover();
+            }
             if (currentMouseTile.x != -1 && grid[currentMouseTile.x,currentMouseTile.y] != null)
             {
                 holding = grid[currentMouseTile.x, currentMouseTile.y].gameObject;
@@ -54,6 +58,7 @@ public class Shop : MonoBehaviour
             {
                 RemovePart(holding.GetComponent<ShipPart>());
                 ship.BuyPart(holding.GetComponent<ShipPart>());
+                holding.GetComponent<ShipPart>().OnAdd();
             }
             holding = null;
         }
@@ -81,7 +86,7 @@ public class Shop : MonoBehaviour
         {
             for (int j = 0; j < shopHeight; j++)
             {
-                ShopTile tile = Instantiate(shopTile, transform.position + transform.right * (i + 5) - transform.up * (j - 5), transform.rotation).GetComponent<ShopTile>();
+                ShopTile tile = Instantiate(shopTile, transform.position + transform.right * (i + 5) - transform.up * (j - 4.5f), transform.rotation).GetComponent<ShopTile>();
                 Vector2Int gridPos = new Vector2Int(i, j);
                 tile.gameObject.transform.parent = gameObject.transform;
                 tile.gridPosition = gridPos;
@@ -104,17 +109,13 @@ public class Shop : MonoBehaviour
     {
         shop = true;
         BuildGrid();
-        AddPart(PartName.testGen, new Vector2Int(2, 2));
-        AddPart(PartName.testGun, new Vector2Int(4, 2));
-        AddPart(PartName.test, new Vector2Int(2, 5));
-        AddPart(PartName.turner, new Vector2Int(2, 8));
 
-
+        StockShop();
     }
     public void OffShop()
     {
+        if(shop) DestroyGrid();
         shop = false;
-        DestroyGrid();
     }
     void AddPart(PartName name, Vector2Int pos)
     {
@@ -143,5 +144,28 @@ public class Shop : MonoBehaviour
                 grid[pos.x + i, pos.y + j] = null;
             }
         }
+    }
+    void StockShop()
+    {
+        AddPart(PartName.gun1, new Vector2Int(1, 1));
+        AddPart(PartName.gun2, new Vector2Int(2, 1));
+        AddPart(PartName.gun3, new Vector2Int(4, 1));
+
+        AddPart(PartName.generator1, new Vector2Int(1, 4));
+        AddPart(PartName.generator2, new Vector2Int(2, 4));
+        AddPart(PartName.generator3, new Vector2Int(4, 4));
+
+        AddPart(PartName.thruster1, new Vector2Int(1, 6));
+        AddPart(PartName.thruster2, new Vector2Int(2, 6));
+        AddPart(PartName.thruster3, new Vector2Int(4, 6));
+
+        AddPart(PartName.turner1, new Vector2Int(1, 8));
+        AddPart(PartName.turner2, new Vector2Int(2, 8));
+        AddPart(PartName.turner3, new Vector2Int(4, 8));
+
+        AddPart(PartName.armour1, new Vector2Int(1, 11));
+        AddPart(PartName.shield1, new Vector2Int(2, 11));
+        AddPart(PartName.charger1, new Vector2Int(3, 11));
+        AddPart(PartName.battery1, new Vector2Int(4, 11));
     }
 }

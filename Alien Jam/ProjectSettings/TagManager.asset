@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - UI
+  - Border
   layers:
   - Default
   - TransparentFX
@@ -50,4 +52,7 @@ TagManager:
     locked: 0
   - name: Ship Parts
     uniqueID: 2911116599
+    locked: 0
+  - name: Projectiles
+    uniqueID: 3866464697
     locked: 0
