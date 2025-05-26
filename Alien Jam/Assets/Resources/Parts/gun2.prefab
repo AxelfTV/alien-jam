@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1383850697
-  m_SortingLayer: 2
+  m_SortingLayerID: -776481793
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -1308958166, guid: 4565cced3c06bc549906d21fa09143c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -133,8 +133,8 @@ MonoBehaviour:
   height: 2
   gridPosition: {x: 0, y: 0}
   cooldown: 2.5
-  cost: 3
-  price: 4
+  cost: 7
+  price: 25
   activeSprite: {fileID: 728193124, guid: 4565cced3c06bc549906d21fa09143c0, type: 3}
   inactiveSprite: {fileID: -1308958166, guid: 4565cced3c06bc549906d21fa09143c0, type: 3}
   partName: Large Rocket Silo

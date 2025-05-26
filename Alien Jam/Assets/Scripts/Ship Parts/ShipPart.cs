@@ -33,10 +33,15 @@ public abstract class ShipPart : MonoBehaviour
 		{
 			active = false;
 			OnCooldownEnd();
-			spriteRenderer.sprite = inactiveSprite;
+			StartCoroutine(SpriteInactive());
 		}
 		
 	}
+	IEnumerator SpriteInactive()
+	{
+		yield return null;
+		if(!active) spriteRenderer.sprite = inactiveSprite;
+    }
 	public virtual void Power() { }
 	public virtual void Attack(List<GameObject> enemiesInRange) { }
 	public virtual void Thrust() { }
@@ -57,7 +62,9 @@ public abstract class ShipPart : MonoBehaviour
     }
 	protected bool Activate() 
 	{
-		if (timer >= cooldown && ShipController.stats.power >= cost)
+		if (timer < cooldown) return false;
+
+		if (ShipController.stats.power >= cost)
 		{
 			timer = 0;
 			active = true;
@@ -65,6 +72,7 @@ public abstract class ShipPart : MonoBehaviour
 			ShipController.stats.power -= cost;
 			return true;
 		}
+		GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().CantUse();
 		return false;
 	}
 	public static GameObject GetPart(PartName name)

@@ -56,3 +56,9 @@ TagManager:
   - name: Projectiles
     uniqueID: 3866464697
     locked: 0
+  - name: Shop
+    uniqueID: 2860872027
+    locked: 0
+  - name: Shop Items
+    uniqueID: 3518485503
+    locked: 0

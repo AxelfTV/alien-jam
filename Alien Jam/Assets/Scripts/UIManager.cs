@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider powerBar;
     [SerializeField] TMP_Text powerText;
     [SerializeField] TMP_Text moneyText;
+    [SerializeField] GameObject lowPowerText;
     //info panel
     [SerializeField] GameObject infoPanel;
     [SerializeField] TMP_Text partName;
@@ -48,8 +49,8 @@ public class UIManager : MonoBehaviour
     {
         partName.text = pn;
         partDesc.text = pd;
-        sellPrice.text = "Sell: " + (pp/2).ToString();
-        partPrice.text = "Price: " + pp.ToString();
+        sellPrice.text = "Sell: $" + (pp/2).ToString();
+        partPrice.text = "Price: $" + pp.ToString();
         float cost = pc / partCooldown;
         partCost.text = "Power: " + string.Format("{0:F1}",cost)+"/s";
 
@@ -67,6 +68,17 @@ public class UIManager : MonoBehaviour
     {
         shopUI.SetActive(false);
         CloseInfoPanel();
+    }
+    IEnumerator LowPower()
+    {
+        lowPowerText.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        lowPowerText.SetActive(false);
+    }
+    public void CantUse()
+    {
+        StopCoroutine("LowPower");
+        StartCoroutine("LowPower");
     }
 }
 

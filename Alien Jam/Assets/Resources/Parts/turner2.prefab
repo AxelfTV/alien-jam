@@ -50,7 +50,7 @@ MonoBehaviour:
   gridPosition: {x: 0, y: 0}
   cooldown: 0.375
   cost: 1
-  price: 4
+  price: 20
   activeSprite: {fileID: 600439365, guid: 7b1cca9dc4bb8c74bb69819bd5d93e79, type: 3}
   inactiveSprite: {fileID: -2131447474, guid: 7b1cca9dc4bb8c74bb69819bd5d93e79, type: 3}
   partName: Medium Side Thrusters
@@ -126,8 +126,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1383850697
-  m_SortingLayer: 2
+  m_SortingLayerID: -776481793
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -2131447474, guid: 7b1cca9dc4bb8c74bb69819bd5d93e79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

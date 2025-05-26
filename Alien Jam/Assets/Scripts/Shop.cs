@@ -7,6 +7,9 @@ public class Shop : MonoBehaviour
 {
     [SerializeField] GameObject shopTile;
     [SerializeField] ShipManager ship;
+    [SerializeField] GameObject sprite;
+    [SerializeField] AudioSource purchaseSound;
+    [SerializeField] AudioSource failSound;
     Dictionary<Vector2Int, ShopTile> tiles;
     public static ShipPart[,] grid;
     List<ShipPart> parts;
@@ -44,19 +47,24 @@ public class Shop : MonoBehaviour
             if (currentMouseTile.x != -1 && grid[currentMouseTile.x,currentMouseTile.y] != null)
             {
                 holding = grid[currentMouseTile.x, currentMouseTile.y].gameObject;
-
+                holding.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
             }
         }
         if (!Input.GetMouseButton(0) && holding != null)
         {
+            holding.GetComponentInChildren<SpriteRenderer>().sortingOrder = 0;
             if (!ship.CheckBuy(holding.GetComponent<ShipPart>()))
             {
                 Vector2Int gp = holding.GetComponent<ShipPart>().gridPosition;
                 holding.transform.position = tiles[gp].transform.position;
+                failSound.time = 0;
+                failSound.Play();
             }
             else
             {
                 RemovePart(holding.GetComponent<ShipPart>());
+                purchaseSound.time = 0;
+                purchaseSound.Play();
                 ship.BuyPart(holding.GetComponent<ShipPart>());
                 holding.GetComponent<ShipPart>().OnAdd();
             }
@@ -86,7 +94,7 @@ public class Shop : MonoBehaviour
         {
             for (int j = 0; j < shopHeight; j++)
             {
-                ShopTile tile = Instantiate(shopTile, transform.position + transform.right * (i + 5) - transform.up * (j - 4.5f), transform.rotation).GetComponent<ShopTile>();
+                ShopTile tile = Instantiate(shopTile, transform.position + transform.right * i - transform.up * j, transform.rotation).GetComponent<ShopTile>();
                 Vector2Int gridPos = new Vector2Int(i, j);
                 tile.gameObject.transform.parent = gameObject.transform;
                 tile.gridPosition = gridPos;
@@ -107,6 +115,7 @@ public class Shop : MonoBehaviour
     }
     public void OnShop() 
     {
+        sprite.SetActive(true);
         shop = true;
         BuildGrid();
 
@@ -114,6 +123,7 @@ public class Shop : MonoBehaviour
     }
     public void OffShop()
     {
+        sprite.SetActive(false);
         if(shop) DestroyGrid();
         shop = false;
     }

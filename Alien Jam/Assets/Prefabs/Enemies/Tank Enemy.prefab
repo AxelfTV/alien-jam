@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6439013456188532326}
   - component: {fileID: 6923857905448598409}
   - component: {fileID: 1881389651228071772}
+  - component: {fileID: -340603058916778865}
   m_Layer: 0
   m_Name: Tank Enemy
   m_TagString: Enemy
@@ -100,11 +101,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatManager: {fileID: 0}
-  health: 60
+  health: 45
   cost: 5
-  money: 20
-  damage: 10
-  speed: 0.7
+  money: 12
+  damage: 8
+  speed: 1.5
 --- !u!50 &6923857905448598409
 Rigidbody2D:
   serializedVersion: 4
@@ -167,3 +168,24 @@ CircleCollider2D:
   m_Offset: {x: -0.13286138, y: 0.31554604}
   serializedVersion: 2
   m_Radius: 2.299677
+--- !u!95 &-340603058916778865
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675286820632382604}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c4fd19e6e6222347b408ad5ef92a5c1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

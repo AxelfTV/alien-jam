@@ -5,14 +5,19 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
+    [SerializeField] GameObject bigBoss;
     List<Enemy> enemies;
     [SerializeField] List<GameObject> enemyPrefabs;
     int points;
-    int wave = 0;
+    public static int wave = 0;
+    public static int fWave;
+    [SerializeField] int finalWave = 20;
+    [SerializeField] AudioSource bugDie;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        wave = 0;
+        fWave = finalWave;
     }
 
     // Update is called once per frame
@@ -30,6 +35,8 @@ public class CombatManager : MonoBehaviour
     }
     public void OnEnemyDeath(Enemy enemy)
     {
+        bugDie.time = 0;
+        bugDie.Play();
         enemies.Remove(enemy);
         if(enemies.Count <= 0)
         {
@@ -39,9 +46,19 @@ public class CombatManager : MonoBehaviour
     void SpawnWave()
     {
         wave++;
-        points = wave;
+        
+        points = 2*wave;
         enemies = new List<Enemy>();
-        while(points > 0)
+        if (wave >= finalWave)
+        {
+            for(int i = 0; i< (wave - finalWave +1); i++)
+            {
+                SpawnBigBoss();
+            }
+            
+            return;
+        }
+        while (points > 0)
         {
             Enemy enemy = SpawnEnemy().GetComponent<Enemy>();
             enemy.combatManager = this;
@@ -66,6 +83,16 @@ public class CombatManager : MonoBehaviour
             }
         }
         return Instantiate(enemy, spawnDir*radius, Quaternion.identity);
+    }
+    void SpawnBigBoss()
+    {
+        float angle = Random.Range(0, Mathf.PI * 2);
+        Vector3 spawnDir = new Vector3(1.6f * Mathf.Sin(angle), Mathf.Cos(angle));
+        float radius = Random.Range(30, 40);
+        
+        Enemy enemy = Instantiate(bigBoss, spawnDir * radius, Quaternion.identity).GetComponent<Enemy>();
+        enemy.combatManager = this;
+        enemies.Add(enemy);
     }
     void EndWave()
     {

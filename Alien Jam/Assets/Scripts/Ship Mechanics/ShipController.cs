@@ -5,6 +5,9 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     [SerializeField] float shieldRechargeCooldown;
+    [SerializeField] AudioSource hitSound;
+    [SerializeField] AudioSource thrustSound;
+    [SerializeField] AudioSource purchaseSound;
     public List<GameObject> enemiesInRange;
     public static ShipStats stats;
     bool thrusting;
@@ -45,6 +48,7 @@ public class ShipController : MonoBehaviour
         }
         else
         {
+            
             thrusting = false;
         }
 
@@ -52,16 +56,23 @@ public class ShipController : MonoBehaviour
         {
             turning = true;
             turnDir = 1;
+            
         }
         else if(Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             turning = true;
             turnDir = -1;
+            
         }
         else
         {
             turning = false;
         }
+        if(turning || thrusting)
+        {
+            if (!thrustSound.isPlaying) thrustSound.Play();
+        }
+        else if(thrustSound.isPlaying) thrustSound.Pause();
         attacking = (enemiesInRange.Count > 0);
         recharging = (canRecharge && stats.shield < stats.maxShield);
         if (!shop) PartsTick();
@@ -78,7 +89,7 @@ public class ShipController : MonoBehaviour
         if (thrusting) rb.AddForce(transform.up * stats.thrust * thrustDir, ForceMode2D.Force);
         rb.AddForce(-rb.velocity, ForceMode2D.Force);
 
-        if (turning) transform.RotateAround(transform.position, Vector3.forward, turnDir * stats.turnThrust * Time.fixedDeltaTime);
+        if (turning && stats.turnThrust > 0) transform.RotateAround(transform.position, Vector3.forward, turnDir * (stats.turnThrust + 5) * Time.fixedDeltaTime);
         
 	}
 	void PartsTick()
@@ -106,7 +117,9 @@ public class ShipController : MonoBehaviour
     public void HealButton()
     {
         int missingHealth = stats.maxHealth - stats.health;
-        if(missingHealth > stats.money)
+        purchaseSound.time = 0;
+        purchaseSound.Play();
+        if (missingHealth > stats.money)
         {
             Heal(stats.money);
             stats.money = 0;
@@ -123,6 +136,8 @@ public class ShipController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if (shop) return;
+        hitSound.time = 0;
+        hitSound.Play();
         StopCoroutine("ShieldRechargeCooldown");
         StartCoroutine("ShieldRechargeCooldown");
         if (stats.shield > 0)
@@ -143,7 +158,7 @@ public class ShipController : MonoBehaviour
     }
     void Die()
     {
-        //game over
+        GameManager.GameOver();
     }
     IEnumerator ShieldRechargeCooldown()
     {
@@ -151,11 +166,13 @@ public class ShipController : MonoBehaviour
         yield return new WaitForSeconds(shieldRechargeCooldown);
         canRecharge = true;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Border"))
         {
-            rb.AddForce(-rb.velocity * 3, ForceMode2D.Impulse);
+            Vector3 vel = -transform.position.normalized;
+            rb.velocity = Vector3.zero;
+            rb.AddForce(vel * 10, ForceMode2D.Impulse);
         }
     }
 }

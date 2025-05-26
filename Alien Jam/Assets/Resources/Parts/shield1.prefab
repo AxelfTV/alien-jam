@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1383850697
-  m_SortingLayer: 2
+  m_SortingLayerID: -776481793
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bfc2365d214b3fc448f54593d9ad9de4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -134,7 +134,7 @@ MonoBehaviour:
   gridPosition: {x: 0, y: 0}
   cooldown: 1
   cost: 0
-  price: 4
+  price: 10
   activeSprite: {fileID: 21300000, guid: bfc2365d214b3fc448f54593d9ad9de4, type: 3}
   inactiveSprite: {fileID: 21300000, guid: bfc2365d214b3fc448f54593d9ad9de4, type: 3}
   partName: Shield Capacitor

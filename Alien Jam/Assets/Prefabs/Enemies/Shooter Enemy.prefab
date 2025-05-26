@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -1244790703110778063}
   - component: {fileID: 6923857905448598409}
   - component: {fileID: 7617115339505805565}
+  - component: {fileID: -7633913023522138033}
   m_Layer: 0
   m_Name: Shooter Enemy
   m_TagString: Enemy
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 588545208f5ab3d48943b291973e4af3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -102,11 +103,11 @@ MonoBehaviour:
   combatManager: {fileID: 0}
   health: 10
   cost: 2
-  money: 10
+  money: 6
   speed: 1
   shootRange: 20
   shootCooldown: 3
-  retreatRange: 15
+  retreatRange: 8
   projectile: {fileID: 9136562543911009872, guid: df71ccc538667eb4888d5e1d49dda4d3, type: 3}
 --- !u!50 &6923857905448598409
 Rigidbody2D:
@@ -170,3 +171,24 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.94
+--- !u!95 &-7633913023522138033
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2675286820632382604}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9e4cead32578c704c97d618b64b63efa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -30,17 +30,19 @@ public class ShooterEnemy : Enemy
     }
     private void FixedUpdate()
     {
+        transform.position += new Vector3(0, Mathf.Sin(Time.time * 20), 0)*Time.fixedDeltaTime*2;
+
         Vector3 distDiff = player.transform.position - transform.position;
-        rb.velocity = dir * speed * (distDiff).normalized * 3;
+        
         if (distDiff.magnitude < retreatRange) dir = -1;
-        else if (distDiff.magnitude < shootRange - 4) dir = 0;
-        else dir = 1;
+        else if (distDiff.magnitude > shootRange - 4) dir = 1;
 
         if(distDiff.magnitude < shootRange && canShoot)
         {
             Shoot(distDiff);
         }
-        if (rb.velocity.x < 0) spriteRenderer.flipX = true;
+        rb.velocity = dir * speed * (distDiff).normalized * 3;
+        if (dir * rb.velocity.x < 0) spriteRenderer.flipX = true;
         else spriteRenderer.flipX = false;
     }
     void Shoot(Vector3 dir)

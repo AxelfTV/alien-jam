@@ -8,6 +8,7 @@ public class ShipManager : MonoBehaviour
 {
     Vector2Int currentMouseTile;
     [SerializeField] GameObject shipTile;
+    [SerializeField] AudioSource purchaseSound;
     Dictionary<Vector2Int, ShipTile> tiles;
 
     bool shop;
@@ -101,6 +102,7 @@ public class ShipManager : MonoBehaviour
     {
         GameObject part = ShipPart.GetPart(name);
 		GameObject instPart = Instantiate(part, tiles[pos].transform);
+        instPart.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Ship Parts";
         instPart.transform.parent = gameObject.transform;
 		ShipPart sp = instPart.GetComponent<ShipPart>();
         if (ShipGrid.instance.AddToGrid(sp, pos))
@@ -124,6 +126,7 @@ public class ShipManager : MonoBehaviour
         part.OnHover();
         ShipController.stats.money -= part.price;
         part.gridPosition = currentMouseTile;
+        part.gameObject.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Ship Parts";
         part.transform.position = tiles[currentMouseTile].transform.position;
         part.transform.parent = gameObject.transform;
             
@@ -176,11 +179,13 @@ public class ShipManager : MonoBehaviour
     {
         if (shipLevel >= shipSprites.Length) return;
         int price;
-        if (shipLevel == 0) price = 30;
-        else price = 100;
+        if (shipLevel == 0) price = 50;
+        else price = 300;
         if (ShipController.stats.money < price) return;
         ShipController.stats.money -= price;
         shipLevel++;
+        purchaseSound.time = 0;
+        purchaseSound.Play();
         SetShipSize();
         SetShipGrid();
         DestroyGrid();
@@ -194,10 +199,10 @@ public class ShipManager : MonoBehaviour
         switch(shipLevel)
         {
             case 0:
-                text.text = "Upgrade Ship - 30";
+                text.text = "Upgrade Ship - $50";
                 break;
             case 1:
-                text.text = "Upgrade Ship - 100";
+                text.text = "Upgrade Ship - $300";
                 break;
         }
     }

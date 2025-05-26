@@ -25,6 +25,7 @@ public class TestEnemy : Enemy
     }
     private void FixedUpdate()
     {
+        transform.position += new Vector3(0, Mathf.Sin(Time.time * 20), 0) * Time.fixedDeltaTime * 2;
         rb.velocity = dir * speed * (player.transform.position - transform.position).normalized * 3;
 
 
