@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour
 {
     public CombatManager combatManager;
-    [SerializeField] int health = 10;
+    [SerializeField] protected int health = 10;
     [SerializeField] public int cost = 1;
     [SerializeField] int money = 0;
 

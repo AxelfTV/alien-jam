@@ -132,12 +132,12 @@ MonoBehaviour:
   width: 1
   height: 1
   gridPosition: {x: 0, y: 0}
-  cooldown: 0.5
+  cooldown: 1
   cost: 1
   price: 15
   activeSprite: {fileID: -939668742, guid: 03bb09c0a34f0474ebc585380f896e08, type: 3}
   inactiveSprite: {fileID: 2020927163, guid: 03bb09c0a34f0474ebc585380f896e08, type: 3}
   partName: Shield Charger
   partDesc: Shield recharges after not taking damage for a period of time. Recharges
-    2 shield per second.
+    1 shield per second.
   charge: 1

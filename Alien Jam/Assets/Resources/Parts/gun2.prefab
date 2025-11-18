@@ -132,8 +132,8 @@ MonoBehaviour:
   width: 2
   height: 2
   gridPosition: {x: 0, y: 0}
-  cooldown: 2.5
-  cost: 7
+  cooldown: 4
+  cost: 10
   price: 25
   activeSprite: {fileID: 728193124, guid: 4565cced3c06bc549906d21fa09143c0, type: 3}
   inactiveSprite: {fileID: -1308958166, guid: 4565cced3c06bc549906d21fa09143c0, type: 3}

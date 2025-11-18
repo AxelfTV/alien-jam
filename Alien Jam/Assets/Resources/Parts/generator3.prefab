@@ -48,13 +48,13 @@ MonoBehaviour:
   width: 2
   height: 2
   gridPosition: {x: 0, y: 0}
-  cooldown: 0.083
+  cooldown: 0.05
   cost: 0
-  price: 50
+  price: 80
   activeSprite: {fileID: -1582518112, guid: 8bf904ff65019b54dbaf725dac7071ef, type: 3}
   inactiveSprite: {fileID: -2121094740, guid: 8bf904ff65019b54dbaf725dac7071ef, type: 3}
   partName: Large Generator
-  partDesc: Generates 12 units of power per second.
+  partDesc: Generates 20 units of power per second.
   power: 1
 --- !u!1 &8778599951830678142
 GameObject:

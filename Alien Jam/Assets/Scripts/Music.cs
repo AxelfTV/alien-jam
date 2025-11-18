@@ -10,7 +10,12 @@ public class Music : MonoBehaviour
     void Start()
     {
         if (instance != null) Destroy(gameObject);
-        else DontDestroyOnLoad(gameObject);
+        else 
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        
         
     }
 

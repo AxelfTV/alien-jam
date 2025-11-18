@@ -171,6 +171,7 @@ public class ShipController : MonoBehaviour
         if (collision.CompareTag("Border"))
         {
             Vector3 vel = -transform.position.normalized;
+            vel = new Vector3(vel.x * vel.x * vel.x, vel.y * vel.y * vel.y).normalized;
             rb.velocity = Vector3.zero;
             rb.AddForce(vel * 10, ForceMode2D.Impulse);
         }

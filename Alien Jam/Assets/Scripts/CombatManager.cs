@@ -47,7 +47,8 @@ public class CombatManager : MonoBehaviour
     {
         wave++;
         
-        points = 2*wave;
+        points = 2*wave + (5*((wave/5)* (wave / 5)));
+        Debug.Log("Wave: " + wave.ToString() + ", Points: " + points.ToString());
         enemies = new List<Enemy>();
         if (wave >= finalWave)
         {

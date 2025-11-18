@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9060f18ff3d7714d99f027ea0172864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldRechargeCooldown: 2
+  shieldRechargeCooldown: 5
   hitSound: {fileID: 618201876}
   thrustSound: {fileID: 618201877}
   purchaseSound: {fileID: 2065744008}
@@ -2444,7 +2444,6 @@ MonoBehaviour:
   - {fileID: 2675286820632382604, guid: 39f2b661a63824e40a8ccd364382d62f, type: 3}
   - {fileID: 2675286820632382604, guid: fe7404ab7c771b24ca1e232b043e6847, type: 3}
   - {fileID: 2675286820632382604, guid: d602c57dca3d35345b505d9aaadda599, type: 3}
-  - {fileID: 2675286820632382604, guid: bd1c9cbe13cef3c45911f61d8571bc15, type: 3}
   finalWave: 20
   bugDie: {fileID: 826190877}
 --- !u!82 &826190877

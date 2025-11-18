@@ -13,6 +13,8 @@ public class TestEnemy : Enemy
     // Start is called before the first frame update
     void Start()
     {
+        speed *= 1 + CombatManager.wave / 20;
+        health += CombatManager.wave - 1;
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         spriteRenderer = GetComponent<SpriteRenderer>();
