@@ -103,7 +103,7 @@ MonoBehaviour:
   combatManager: {fileID: 0}
   health: 45
   cost: 5
-  money: 12
+  money: 15
   damage: 8
   speed: 1.5
 --- !u!50 &6923857905448598409

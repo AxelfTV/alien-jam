@@ -32,10 +32,6 @@ public class ShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(8);
-        }
         if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
         {
             thrusting = true;
